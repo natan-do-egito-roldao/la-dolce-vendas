@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#5A200D" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="La Dolce" />
+  <link rel="apple-touch-icon" href="logo.png" />
+  <link rel="icon" type="image/png" href="logo.png" />
+  <title>La Dolce Brasil — Cadastro de Vendas</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Notificação Estilo Dynamic Island iOS -->
+  <div id="iosToast" class="ios-toast" role="status" aria-live="polite">
+    <span id="toastIcon" class="toast-icon success">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+    </span>
+    <span id="toastText">Venda registrada com sucesso!</span>
+  </div>
+
+  <main class="app-shell">
+    <!-- Cabeçalho Oficial La Dolce Brasil -->
+    <header id="brandHeader" class="brand-header">
+      <div class="brand-logo-wrap">
+        <img src="logo.png" alt="La Dolce Brasil — Doces Artesanais" class="brand-logo-img" />
+      </div>
+
+      <!-- Pílula de Vendedor Logado -->
+      <div id="headerSellerPill" class="active-seller-pill hidden">
+        <span class="status-dot"></span>
+        <span>Vendedor: <strong id="headerSellerName">Natan</strong></span>
+      </div>
+    </header>
+
+    <!-- Área de Conteúdo das Abas -->
+    <div class="tab-views">
+
+      <!-- =================================================================
+           ABA 1: LOGIN DO VENDEDOR
+           ================================================================= -->
+      <section id="tabLogin" class="tab-pane active" aria-labelledby="tabBtnLogin">
+        
+        <!-- Card de Login por Senha -->
+        <div id="loginFormCard" class="ios-card">
+          <div class="login-hero">
+            <div class="ios-icon-circle">
+              <!-- Ícone Cadeado iOS (SF Symbols lock.fill) -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="3" ry="3"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </div>
+            <h1 class="section-title">Acesso do Vendedor</h1>
+            <p class="section-desc">Digite sua senha individual para liberar o painel de vendas</p>
+          </div>
+
+          <form id="loginForm" autocomplete="off">
+            <div class="password-field-wrap">
+              <span class="input-leading-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+                </svg>
+              </span>
+              <input
+                type="password"
+                id="sellerPasswordInput"
+                class="ios-input-password"
+                placeholder="Sua senha"
+                inputmode="numeric"
+                maxlength="12"
+                required
+              />
+              <button type="button" id="togglePassBtn" class="toggle-visibility-btn" aria-label="Mostrar ou ocultar senha">
+                <svg id="eyeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Teclado Estilo iPhone para Toque Rápido -->
+            <div class="pin-keypad" aria-label="Teclado numérico">
+              <button type="button" class="pin-key" data-digit="1">1</button>
+              <button type="button" class="pin-key" data-digit="2">2</button>
+              <button type="button" class="pin-key" data-digit="3">3</button>
+              <button type="button" class="pin-key" data-digit="4">4</button>
+              <button type="button" class="pin-key" data-digit="5">5</button>
+              <button type="button" class="pin-key" data-digit="6">6</button>
+              <button type="button" class="pin-key" data-digit="7">7</button>
+              <button type="button" class="pin-key" data-digit="8">8</button>
+              <button type="button" class="pin-key" data-digit="9">9</button>
+              <button type="button" class="pin-key pin-action" id="pinClearBtn">Limpar</button>
+              <button type="button" class="pin-key" data-digit="0">0</button>
+              <button type="button" class="pin-key pin-action" id="pinBackBtn" aria-label="Apagar">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
+                  <line x1="18" y1="9" x2="12" y2="15"></line>
+                  <line x1="12" y1="9" x2="18" y2="15"></line>
+                </svg>
+              </button>
+            </div>
+
+            <div id="loginErrorMsg" class="login-feedback"></div>
+
+            <button type="submit" class="ios-btn-primary" style="margin-top: 8px;">
+              <span>Entrar no Painel</span>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </form>
+        </div>
+
+        <!-- Card de Vendedor Conectado (Exibido quando logado) -->
+        <div id="loggedSellerCard" class="ios-card logged-profile-card hidden">
+          <div id="sellerAvatarInitial" class="seller-avatar">N</div>
+          <span class="seller-badge-role">Sessão Ativa</span>
+          <div>
+            <h2 class="section-title">Olá, <span id="loggedSellerName">Natan</span>!</h2>
+            <p class="section-desc">Suas vendas registradas serão vinculadas automaticamente ao seu nome na planilha.</p>
+          </div>
+
+          <button type="button" id="goToSalesBtn" class="ios-btn-primary" style="margin-top: 8px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+            <span>Ir para Registro de Vendas</span>
+          </button>
+
+          <button type="button" id="logoutSellerBtn" class="ios-btn-secondary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            <span>Trocar de Vendedor</span>
+          </button>
+        </div>
+
+      </section>
+
+      <!-- =================================================================
+           ABA 2: REGISTRO DE VENDAS
+           ================================================================= -->
+      <section id="tabSales" class="tab-pane" aria-labelledby="tabBtnSales">
+
+        <form id="salesForm" autocomplete="off" style="display: flex; flex-direction: column; gap: 16px;">
+
+          <!-- 1. Seleção do Doce -->
+          <div class="ios-card">
+            <div class="label-row">
+              <span class="ios-section-label">
+                <!-- Ícone Sparkles iOS -->
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3l1.912 5.813a2 2 0 001.275 1.275L21 12l-5.813 1.912a2 2 0 00-1.275 1.275L12 21l-1.912-5.813a2 2 0 00-1.275-1.275L3 12l5.813-1.912a2 2 0 001.275-1.275L12 3z"></path>
+                </svg>
+                1. Selecione o Doce
+              </span>
+              <span id="productStatusHint" style="font-size: 0.75rem; color: var(--cocoa-light); font-weight: 600;">Toque para selecionar</span>
+            </div>
+
+            <div
+              id="productCard"
+              class="product-option-card selected"
+              role="button"
+              tabindex="0"
+              aria-pressed="true"
+              data-product="Palha Italiana de Chocolate com Leite Ninho"
+            >
+              <div class="product-icon-box">
+                <!-- Ícone Doce Artesanal / Camadas -->
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                  <path d="M2 17l10 5 10-5"></path>
+                  <path d="M2 12l10 5 10-5"></path>
+                </svg>
+              </div>
+              <div class="product-info">
+                <div class="product-category">La Dolce Brasil</div>
+                <div class="product-name">Palha Italiana de Chocolate com Leite Ninho</div>
+              </div>
+              <div class="product-check">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Detalhes habilitados ao selecionar o doce -->
+          <div id="saleDetailsBox" class="sale-details-container">
+
+            <!-- 2. Quantidade Vendida -->
+            <div class="ios-card">
+              <div class="label-row">
+                <span class="ios-section-label">
+                  <!-- Ícone Sacola iOS -->
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                  </svg>
+                  2. Quantas foram vendidas?
+                </span>
+              </div>
+
+              <div class="qty-control-wrapper">
+                <button type="button" id="qtyMinusBtn" class="qty-btn" aria-label="Diminuir quantidade">−</button>
+                <input type="number" id="qtyInput" class="qty-input" value="1" min="1" max="999" required />
+                <button type="button" id="qtyPlusBtn" class="qty-btn" aria-label="Aumentar quantidade">+</button>
+              </div>
+
+              <div class="quick-chips">
+                <button type="button" class="chip-btn qty-chip active" data-qty="1">1 un.</button>
+                <button type="button" class="chip-btn qty-chip" data-qty="2">2 un.</button>
+                <button type="button" class="chip-btn qty-chip" data-qty="3">3 un.</button>
+                <button type="button" class="chip-btn qty-chip" data-qty="5">5 un.</button>
+              </div>
+            </div>
+
+            <!-- 3. Por quanto foi vendido (Valor Total) -->
+            <div class="ios-card">
+              <div class="label-row">
+                <span class="ios-section-label">
+                  <!-- Ícone Moeda/Tag iOS -->
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                  </svg>
+                  3. Por quanto foi vendido? (Total)
+                </span>
+              </div>
+
+              <div class="currency-input-wrap">
+                <span class="currency-prefix">R$</span>
+                <input
+                  type="number"
+                  id="totalPriceInput"
+                  class="currency-input"
+                  placeholder="0,00"
+                  step="0.01"
+                  min="0.01"
+                  value="6.00"
+                  inputmode="decimal"
+                  required
+                />
+              </div>
+
+              <!-- Atalhos de preço rápido -->
+              <div class="quick-chips">
+                <button type="button" class="chip-btn price-chip" data-price="6.00">R$ 6</button>
+                <button type="button" class="chip-btn price-chip" data-price="10.00">R$ 10</button>
+                <button type="button" class="chip-btn price-chip" data-price="12.00">R$ 12</button>
+                <button type="button" class="chip-btn price-chip" data-price="15.00">R$ 15</button>
+                <button type="button" class="chip-btn price-chip" data-price="18.00">R$ 18</button>
+              </div>
+
+              <div class="unit-price-calc">
+                <span>Preço unitário calculado:</span>
+                <strong id="calculatedUnitPrice">R$ 6,00 / un.</strong>
+              </div>
+            </div>
+
+            <!-- 4. Forma de Pagamento -->
+            <div class="ios-card">
+              <div class="label-row">
+                <span class="ios-section-label">
+                  <!-- Ícone Cartão iOS -->
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                    <line x1="1" y1="10" x2="23" y2="10"></line>
+                  </svg>
+                  4. Forma de Pagamento
+                </span>
+              </div>
+
+              <div class="payment-grid" role="radiogroup" aria-label="Forma de pagamento">
+                <!-- Pix -->
+                <div class="payment-option selected" data-payment="Pix" role="radio" aria-checked="true" tabindex="0">
+                  <div class="payment-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="12 2 22 12 12 22 2 12 12 2"></polygon>
+                      <line x1="8" y1="12" x2="16" y2="12"></line>
+                      <line x1="12" y1="8" x2="12" y2="16"></line>
+                    </svg>
+                  </div>
+                  <span class="payment-label">Pix</span>
+                </div>
+
+                <!-- Dinheiro -->
+                <div class="payment-option" data-payment="Dinheiro" role="radio" aria-checked="false" tabindex="0">
+                  <div class="payment-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                      <circle cx="12" cy="12" r="2"></circle>
+                      <path d="M6 12h.01M18 12h.01"></path>
+                    </svg>
+                  </div>
+                  <span class="payment-label">Dinheiro</span>
+                </div>
+
+                <!-- Débito -->
+                <div class="payment-option" data-payment="Débito" role="radio" aria-checked="false" tabindex="0">
+                  <div class="payment-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                      <line x1="1" y1="10" x2="23" y2="10"></line>
+                    </svg>
+                  </div>
+                  <span class="payment-label">Débito</span>
+                </div>
+
+                <!-- Crédito -->
+                <div class="payment-option" data-payment="Crédito" role="radio" aria-checked="false" tabindex="0">
+                  <div class="payment-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                      <line x1="1" y1="10" x2="23" y2="10"></line>
+                      <line x1="5" y1="15" x2="9" y2="15"></line>
+                    </svg>
+                  </div>
+                  <span class="payment-label">Crédito</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Resumo da Venda & Botão de Envio -->
+            <div class="summary-banner">
+              <div class="summary-line">
+                <span>Vendedor responsável</span>
+                <strong id="summarySeller">Natan</strong>
+              </div>
+              <div class="summary-line">
+                <span>Item selecionado</span>
+                <strong id="summaryItem">Palha Italiana (Choc. c/ Ninho)</strong>
+              </div>
+              <div class="summary-line">
+                <span>Pagamento</span>
+                <strong id="summaryPayment">Pix</strong>
+              </div>
+              <div class="summary-line total">
+                <span id="summaryQtyLabel">Total (1 unidade)</span>
+                <span id="summaryTotalValue">R$ 6,00</span>
+              </div>
+            </div>
+
+            <button type="submit" id="submitSaleBtn" class="ios-btn-primary">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              <span>Registrar Venda na Planilha</span>
+            </button>
+
+          </div>
+
+        </form>
+
+      </section>
+
+    </div>
+
+    <!-- Barra de Navegação Inferior Estilo iPhone (iOS Tab Bar) -->
+    <nav class="ios-tab-bar" aria-label="Navegação Principal">
+      <button type="button" id="tabBtnLogin" class="tab-item active" data-target="tabLogin">
+        <!-- Ícone Pessoa/Chave iOS -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        <span>Vendedor</span>
+      </button>
+
+      <button type="button" id="tabBtnSales" class="tab-item" data-target="tabSales">
+        <span id="salesTabLockBadge" class="tab-lock-badge" title="Faça login primeiro">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </span>
+        <!-- Ícone Sacola de Vendas iOS -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <path d="M16 10a4 4 0 0 1-8 0"></path>
+        </svg>
+        <span>Vendas</span>
+      </button>
+    </nav>
+  </main>
+
+  <script src="code.js"></script>
+</body>
+</html>
